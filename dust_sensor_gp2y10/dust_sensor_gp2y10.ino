@@ -9,12 +9,23 @@ float voMeasured = 0.0;
 float calcVoltage = 0.0;
 float dustDensity = 0.0;
 
+float dust;
 
 void setup() {
   Serial.begin(9600);
   pinMode(ledPower,OUTPUT);
 }
 void loop() {
+  dust = 0;
+  for(int i=0;i<5;i++) {
+    dust += dust_check();
+  }
+  dust = dust / 5.0;
+  Serial.print("   -   Dust density :  ");
+  Serial.println(dust);
+}
+
+float dust_check() {
   digitalWrite(ledPower,LOW );
   delayMicroseconds(samplingTime);
 
@@ -26,8 +37,11 @@ void loop() {
 
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
-  dustDensity = 0.17 * calcVoltage;// -0.1;
+  dustDensity = (0.17 * calcVoltage -0.1)* 1000 ;// -0.1;
+  delay(1000);
 
+  return dustDensity;
+/*
   Serial.print("Raw signal Valure :  " );
   Serial.print(voMeasured);
 
@@ -36,6 +50,5 @@ void loop() {
   
   Serial.print("   -   Dust density :  ");
   Serial.println(dustDensity);
-
-  delay(1000);
+*/
 }
