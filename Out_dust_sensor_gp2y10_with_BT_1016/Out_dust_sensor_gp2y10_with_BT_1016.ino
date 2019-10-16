@@ -1,9 +1,27 @@
+//
+//  FILE : Outter Dust Sensor
+//  AUTHOR : nobug (nobug007@gmail.com)
+//  CREATED : 10.16.2019
+//  HW : Arduino Nano & GP2Y10 & HC-06
+//
+
 #include <SoftwareSerial.h>
+
+
+////////////    HC-06    //////////////////////
 
 #define rxBT 6
 #define txBT 7
 
-///////////////////////    dust sensor   /////////////////
+int i=0;
+float dust = 0.0;
+
+
+SoftwareSerial btSerial(rxBT,txBT);
+
+String btString;
+
+///////////////////////    dust sensor   GP2Y10   /////////////////
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
 int ledPower = 2;         // Connect 3 led driver pins of dust sensor to Arduino D2
 
@@ -14,26 +32,22 @@ int sleepTime = 9680;
 float voMeasured = 0.0;
 float calcVoltage = 0.0;
 float dustDensity = 0.0;
+
 ////////////////////////////////////////////////////////
 
-int i=0;
-float dust = 0.0;
 
-
-SoftwareSerial btSerial(rxBT,txBT);
-
-String btString;
 
 void setup() {
   Serial.begin(9600);
   pinMode(ledPower,OUTPUT);
   btSerial.begin(9600); 
 }
+
 void loop() {
   get_inner_dust();
   Serial_Print();
   BT_Send();
-  delay(2500);
+  delay(2500);  // send cycle 
 }
 
 
@@ -59,9 +73,9 @@ float dust_check() {
 
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
-  dustDensity = (0.17 * calcVoltage /* -1 */ - 0.07 )* 1000 ;
+  dustDensity = (0.17 * calcVoltage /* -1 */ - 0.1 )* 1000 ; // cal == 0.1
   delay(500);
-
+  if ( dustDensity < 0 ) dustDensity = 0;
   return dustDensity;
 }
 

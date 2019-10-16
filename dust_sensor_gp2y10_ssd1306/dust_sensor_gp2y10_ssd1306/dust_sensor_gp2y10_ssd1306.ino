@@ -5,11 +5,48 @@
 //  HW : NodeMCU & SSD1306
 //
 
+#include <SoftwareSerial.h>
 #include <ESP8266WiFi.h>
 #include <Wire.h>  // Only needed for Arduino 1.6.5 and earlier
 #include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"`
  
+ ////////////    HC-06    //////////////////////
+
+#define rxBT D6
+#define txBT D7
+
+SoftwareSerial btSerial(rxBT,txBT);
+
+String btString;
+
+
+
+void setup() {
+  delay(1000);
+  Serial.begin(9600);  
+//  Serial.println("BT Start");
+//   btSerial.begin(9600); 
+}
  
+//=======================================================================
+//                    Main Program Loop
+//=======================================================================
+void loop() {
+  delay(1000);
+  Serial.println("BT Start");
+ /*
+    while(btSerial.available()) {
+        char c = btSerial.read();
+        Serial.print(c);
+    }
+    delay(1000);
+    */
+}
+//=========================================================================
+
+/*
+
+
 // Initialize the OLED display using Wire library
 SSD1306Wire  display(0x3c, D2, D3);  //D2=SDK  D3=SCK  As per labeling on NodeMCU
 
@@ -27,7 +64,7 @@ float voMeasured = 0.0;
 float calcVoltage = 0.0;
 float dustDensity = 0.0;
 
-float dust;
+float dust = 0.0;
 
 //=======================================================================
 //                    Power on setup
@@ -164,3 +201,8 @@ float dust_check() {
 
   return dustDensity;
 }
+
+
+
+
+*/
