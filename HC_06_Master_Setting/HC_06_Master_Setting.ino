@@ -1,5 +1,7 @@
 #include <SoftwareSerial.h>
-SoftwareSerial bluetooth(6, 7);
+
+SoftwareSerial bluetooth(D6,D7);
+>>>>>>> 1bb5798a1476679d330e145cb8447e2990375f20
 void setup() 
 {
   Serial.begin(9600);
@@ -24,7 +26,7 @@ void setup()
   }
   Serial.println(" !");
 
-  bluetooth.print("AT+NAMEDust_M");
+  bluetooth.print("AT+NAMEDust");
   delay(1000);
   while(bluetooth.available()) {
     char c = bluetooth.read();
