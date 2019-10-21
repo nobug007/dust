@@ -73,7 +73,7 @@ float dust_check() {
 
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
-  dustDensity = (0.17 * calcVoltage /* -1 */ - 0.1 )* 1000 ; // cal == 0.1
+  dustDensity = (0.17 * calcVoltage /* -1 */ -0.06 )* 1000 ; // cal == 0.1
   delay(500);
   if ( dustDensity < 0 ) dustDensity = 0;
   return dustDensity;

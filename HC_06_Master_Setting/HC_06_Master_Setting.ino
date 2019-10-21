@@ -1,10 +1,11 @@
 #include <SoftwareSerial.h>
 SoftwareSerial bluetooth(6,7);
-void setup() 
+>>>>>>> b9ad23705351511be0a8a70ed244028a1a5aebba
+void setup()
 {
   Serial.begin(9600);
   bluetooth.begin(9600);
-  
+
   Serial.println("BT Write !");
 
   bluetooth.print("AT");
@@ -15,7 +16,7 @@ void setup()
   }
   Serial.println(" !");
 
-  
+
   bluetooth.print("AT+ROLE=M");
   delay(1000);
   while(bluetooth.available()) {
