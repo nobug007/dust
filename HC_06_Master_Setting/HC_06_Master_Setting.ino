@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-SoftwareSerial bluetooth(D6,D7);
+SoftwareSerial bluetooth(6,7);
 void setup() 
 {
   Serial.begin(9600);
@@ -24,7 +24,7 @@ void setup()
   }
   Serial.println(" !");
 
-  bluetooth.print("AT+NAMEDust");
+  bluetooth.print("AT+NAMEDust_M");
   delay(1000);
   while(bluetooth.available()) {
     char c = bluetooth.read();
