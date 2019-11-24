@@ -66,19 +66,12 @@ void setup() {
 //                    Main Program Loop
 //=======================================================================
 void loop() {
+  char out_data[10];
+  int out_i=0;
 
 //   drawStatus();  //  BT check & WiFi Check 
 //   drawGraph();   // Draw Graph
 //   sendData2Server();
-//   delay(1000);
-     Out_BT_Read();
-}
-//=========================================================================
-
-void Out_BT_Read() {
-  char out_data[10];
-  int out_i=0;
-
   while (bluetooth.available()) { 
     // 수신 받은 데이터 저장
     out_data[out_i] = (char)bluetooth.read();
@@ -88,25 +81,15 @@ void Out_BT_Read() {
   }
   if ( Flag == 'Y' ) {
         Serial.print("BT Read  :  ");
+        Serial.print(out_data);
         oTemp = atof(out_data);
-        Serial.println(oTemp);
         get_inner_dust();
         drawStatus();
         drawGraph();
         Flag = 'N';
   } 
-  delay(100);
 }
-
-void get_inner_dust() {
-  dust = 0;
-  for(int i=0;i<5;i++) {
-    dust += dust_check();
-  }
-  iTemp = dust / 5.0;
-  Serial.print("   -   Dust density :  ");
-  Serial.println(iTemp);
-}
+//=========================================================================
 
 
 void drawStatus() {
@@ -141,17 +124,13 @@ void drawGraph() {
 
    sprintf(cTemp,"%d",(int)dust);
    display.drawString(124,25, cTemp);
-   Serial.println(dust);
-   Serial.println(cTemp);
    sprintf(cTemp,"%d",oTemp);
    display.drawString(124,48, cTemp);
 
-  if ( dust > 250 ) dust = 250 ;
-  else if ( dust < 0 ) dust = 0;
+   if ( dust > 250 ) dust = 250 ;
+   else if ( dust < 0 ) dust = 0;
    iTemp = map(dust,0,250,0,20);  // dust => graph high
-
-//debug
-   Serial.println(iTemp);
+   oTemp = map(oTemp,0,250,0,20);  // dust => graph high
 
    
    if ( i == graphMax) {
@@ -164,18 +143,23 @@ void drawGraph() {
    iDust[i] = iTemp;
    oDust[i] = oTemp;
    
-   for(j=0;j<=i;j++) {
+   for(j=1;j<=i;j++) {
       display.drawLine(j,40,j,40-iDust[j] );
       display.drawLine(j,64,j,64-oDust[j] );
    }
   display.display();
   if (i < graphMax ) i++;
+  delay(100);
 }
 
-
-void sendData2Server()
-{
-  
+void get_inner_dust() {
+  dust = 0;
+  for (i=0;i<5;i++) {
+    dust += dust_check();
+  }
+  dust = (-1)*dust / 5.0;
+  Serial.print("   -   Dust density :  ");
+  Serial.println(dust);
 }
 
 
@@ -195,4 +179,10 @@ float dust_check() {
   delay(500);
 
   return dustDensity;
+}
+
+
+void sendData2Server()
+{
+  
 }
