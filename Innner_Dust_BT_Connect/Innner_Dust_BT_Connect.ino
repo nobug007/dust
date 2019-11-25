@@ -1,4 +1,5 @@
-//
+ 
+ //
 //  FILE : Inner Dust Sensor
 //  AUTHOR : nobug (nobug007@gmail.com)
 //  CREATED : 10.9.2019
@@ -24,7 +25,7 @@ SSD1306Wire  display(0x3c, D2, D3);  //D2=SDA  D3=SCL  As per labeling on NodeMC
 // gp2y10 dust sensor parameter
 
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
-int ledPower = D8;         // Connect 3 led driver pins of dust sensor to Arduino D8
+int ledPower = D1;         // Connect 3 led driver pins of dust sensor to Arduino D8
 
 int samplingTime = 280;
 int deltaTime = 40;
@@ -59,7 +60,7 @@ void setup() {
  
   display.flipScreenVertically();
   display.setFont(ArialMT_Plain_10);
-  drawStatus();  //  BT check & WiFi Check 
+  drawStatus();  //  need BT check & WiFi Check 
 }
  
 //=======================================================================
@@ -68,10 +69,10 @@ void setup() {
 void loop() {
 
 //   drawStatus();  //  BT check & WiFi Check 
-//   drawGraph();   // Draw Graph
+   drawGraph();   // Draw Graph
 //   sendData2Server();
-//   delay(1000);
-     Out_BT_Read();
+   delay(1000);
+//     Out_BT_Read();
 }
 //=========================================================================
 
@@ -103,7 +104,7 @@ void get_inner_dust() {
   for(int i=0;i<5;i++) {
     dust += dust_check();
   }
-  iTemp = dust / 5.0;
+  dust = dust / 5.0;
   Serial.print("   -   Dust density :  ");
   Serial.println(iTemp);
 }
@@ -138,17 +139,17 @@ void drawStatus() {
 void drawGraph() {
    
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
-
    sprintf(cTemp,"%d",(int)dust);
    display.drawString(124,25, cTemp);
-   Serial.println(dust);
+   Serial.print("dust=");
+   Serial.println( dust);
    Serial.println(cTemp);
    sprintf(cTemp,"%d",oTemp);
    display.drawString(124,48, cTemp);
 
-  if ( dust > 250 ) dust = 250 ;
+  if ( dust > 100 ) dust = 100 ;
   else if ( dust < 0 ) dust = 0;
-   iTemp = map(dust,0,250,0,20);  // dust => graph high
+   iTemp = map(dust,0,100,0,20);  // dust => graph high
 
 //debug
    Serial.println(iTemp);
@@ -191,8 +192,11 @@ float dust_check() {
 
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
-  dustDensity = (0.17 * calcVoltage - 0.1 )* 1000 ; // Cal 0.1
+  dustDensity = (0.17 * calcVoltage)* 1000 ; // Cal 0.1
   delay(500);
+     Serial.print("dustDensity= ");
+
+     Serial.println( dustDensity);
 
   return dustDensity;
 }

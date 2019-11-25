@@ -32,7 +32,7 @@ void setup()
     Serial.print(c);
   }
   Serial.println(" !");
-  bluetooth.print("AT+PIN1234");
+  bluetooth.print("AT+PIN123456");
   delay(1000);
 
   while(bluetooth.available()) {
@@ -46,4 +46,15 @@ void setup()
 }
 void loop()
 {
+  Serial.println("Bluetootn state...");
+  
+  bluetooth.write("AT+STATE?");
+
+  while(bluetooth.available()) {
+    char c = bluetooth.read();
+    Serial.print(c);
+  }
+  Serial.println(" !");
+  delay(1000); 
+  
 }
