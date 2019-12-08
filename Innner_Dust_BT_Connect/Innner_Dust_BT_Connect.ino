@@ -24,7 +24,7 @@ SSD1306Wire  display(0x3c, D2, D3);  //D2=SDA  D3=SCL  As per labeling on NodeMC
 // gp2y10 dust sensor parameter
 
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
-int ledPower = D8;         // Connect 3 led driver pins of dust sensor to Arduino D8
+int ledPower = D5;         // Connect 3 led driver pins of dust sensor to Arduino D5
 
 int samplingTime = 280;
 int deltaTime = 40;
@@ -44,16 +44,16 @@ int i=0,j;
 int iDust[128],iTemp;
 int oDust[128],oTemp;
 int graphMax = 100;
-char cTemp[4];
+char cTemp[5];
 char Flag = 'N';
  
 void setup() {
   delay(1000);
   Serial.begin(9600);  
-  Serial.println("");
   bluetooth.begin(9600); 
   pinMode(ledPower,OUTPUT);  // dust LED pin 
   
+  Serial.println("BT ON");
   Serial.println("Initializing OLED Display");
   display.init();
  
@@ -69,9 +69,6 @@ void loop() {
   char out_data[10];
   int out_i=0;
 
-//   drawStatus();  //  BT check & WiFi Check 
-//   drawGraph();   // Draw Graph
-//   sendData2Server();
   while (bluetooth.available()) { 
     // 수신 받은 데이터 저장
     out_data[out_i] = (char)bluetooth.read();
@@ -80,8 +77,8 @@ void loop() {
     Flag = 'Y';
   }
   if ( Flag == 'Y' ) {
-        Serial.print("BT Read  :  ");
-        Serial.print(out_data);
+        Serial.print("BT Read Out Data :  ");
+        Serial.println(out_data);
         oTemp = atof(out_data);
         get_inner_dust();
         drawStatus();
@@ -124,13 +121,15 @@ void drawGraph() {
 
    sprintf(cTemp,"%d",(int)dust);
    display.drawString(124,25, cTemp);
-   sprintf(cTemp,"%d",oTemp);
+   sprintf(cTemp,"%d",(int)oTemp);
    display.drawString(124,48, cTemp);
 
-   if ( dust > 250 ) dust = 250 ;
+   if ( dust > 100 ) dust = 100 ;
    else if ( dust < 0 ) dust = 0;
-   iTemp = map(dust,0,250,0,20);  // dust => graph high
-   oTemp = map(oTemp,0,250,0,20);  // dust => graph high
+   if ( oTemp > 100 ) oTemp = 100 ;
+   else if ( oTemp < 0 ) oTemp = 0;
+   iTemp = map(dust,0,100,0,20);  // dust => graph high
+   oTemp = map(oTemp,0,100,0,20);  // dust => graph high
 
    
    if ( i == graphMax) {
@@ -154,11 +153,11 @@ void drawGraph() {
 
 void get_inner_dust() {
   dust = 0;
-  for (i=0;i<5;i++) {
+  for (int i=0;i<5;i++) {
     dust += dust_check();
   }
-  dust = (-1)*dust / 5.0;
-  Serial.print("   -   Dust density :  ");
+  dust = dust / 5.0;
+  Serial.print("   -  5 times inner Dust density :  ");
   Serial.println(dust);
 }
 
@@ -175,7 +174,7 @@ float dust_check() {
 
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
-  dustDensity = (0.17 * calcVoltage - 0.1 )* 1000 ; // Cal 0.1
+  dustDensity = (0.17 * calcVoltage + 0.0005 )* 1000 ; // Cal 0.1
   delay(500);
 
   return dustDensity;
