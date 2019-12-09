@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-SoftwareSerial bluetooth(6,7);
+SoftwareSerial bluetooth(D6,D7);
 
 void setup()
 {
@@ -15,7 +15,13 @@ void setup()
     Serial.print(c);
   }
   Serial.println(" !");
-
+  bluetooth.print("AT+VERSION");
+  delay(1000);
+  while(bluetooth.available()) {
+    char c = bluetooth.read();
+    Serial.print(c);
+  }
+  Serial.println(" !");
 
   bluetooth.print("AT+ROLE=M");
   delay(1000);
@@ -23,16 +29,22 @@ void setup()
     char c = bluetooth.read();
     Serial.print(c);
   }
+//  Serial.println(" !");
+// bluetooth.print("AT+CMODE=1");
+//  delay(1000);
+//  while(bluetooth.available()) {
+//    char c = bluetooth.read();
+//    Serial.print(c);
+//  }
   Serial.println(" !");
-
-  bluetooth.print("AT+NAMEDust_M");
+  bluetooth.print("AT+NAMEDust");
   delay(1000);
   while(bluetooth.available()) {
     char c = bluetooth.read();
     Serial.print(c);
   }
   Serial.println(" !");
-  bluetooth.print("AT+PIN123456");
+  bluetooth.print("AT+PIN1234");
   delay(1000);
 
   while(bluetooth.available()) {
@@ -46,15 +58,6 @@ void setup()
 }
 void loop()
 {
-  Serial.println("Bluetootn state...");
   
-  bluetooth.write("AT+STATE?");
-
-  while(bluetooth.available()) {
-    char c = bluetooth.read();
-    Serial.print(c);
-  }
-  Serial.println(" !");
-  delay(1000); 
   
 }

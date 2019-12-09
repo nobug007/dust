@@ -14,7 +14,13 @@ void setup()
     Serial.print(c);
   }
   Serial.println(" !");
-
+ bluetooth.print("AT+VERSION");
+  delay(1000);
+  while(bluetooth.available()) {
+    char c = bluetooth.read();
+    Serial.print(c);
+  }
+  Serial.println(" !");
   
   bluetooth.print("AT+ROLE=S");
   delay(1000);
@@ -24,7 +30,7 @@ void setup()
   }
   Serial.println(" !");
 
-  bluetooth.print("AT+NAMEDust_S");
+  bluetooth.print("AT+NAMEDust");
   delay(1000);
   while(bluetooth.available()) {
     char c = bluetooth.read();
