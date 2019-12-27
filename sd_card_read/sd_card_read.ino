@@ -2,14 +2,17 @@
 #include <SPI.h>
 #include <SD.h>
 
-File myFile;
-
-char c;
-char s[100];
-int i;
-
 void setup() {
   Serial.begin(9600);
+  init_SD();
+}
+void init_SD() {
+  char c;
+  char s[100];
+  int i;
+
+  File myFile;
+
   Serial.print("Initializing SD card...");
 
   if (!SD.begin(D8)) {    // 10은 SD CS 핀입니다.
