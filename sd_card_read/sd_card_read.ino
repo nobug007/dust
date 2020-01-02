@@ -2,6 +2,16 @@
 #include <SPI.h>
 #include <SD.h>
 
+//    Pin 
+//
+//   VCC  -> UV  ( 5V )
+//   CS   -> D8 ( Changable )
+//   SCK  -> D5
+//   MOSI -> D7
+//   MISO -> D6
+
+
+
 void setup() {
   Serial.begin(9600);
   init_SD();
@@ -15,7 +25,7 @@ void init_SD() {
 
   Serial.print("Initializing SD card...");
 
-  if (!SD.begin(D8)) {    // 10은 SD CS 핀입니다.
+  if (!SD.begin(D8)) {    // D8은 SD CS 핀입니다.
     Serial.println("initialization failed!");
     return;
   }

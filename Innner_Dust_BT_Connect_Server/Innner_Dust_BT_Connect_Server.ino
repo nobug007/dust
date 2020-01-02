@@ -26,17 +26,18 @@ String GAS_ID = "AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp";  // 
 
 // BT Port Set up
 
- SoftwareSerial bluetooth(D6, D7);
+
+ SoftwareSerial bluetooth(D1, D2);
 
  
 // Initialize the OLED display using Wire library
-SSD1306Wire  display(0x3c, D2, D3);  //D2=SDA  D3=SCL  As per labeling on NodeMCU
+SSD1306Wire  display(0x3c, D3, D4);  //D3=SDA  D4=SCL  As per labeling on NodeMCU
 
 
 // gp2y10 dust sensor parameter
 
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
-int ledPower = D5;         // Connect 3 led driver pins of dust sensor to Arduino D5
+int ledPower = D0;         // Connect 3 led driver pins of dust sensor to Arduino D5
 
 int samplingTime = 280;
 int deltaTime = 40;
