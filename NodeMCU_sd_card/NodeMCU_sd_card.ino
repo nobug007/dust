@@ -19,6 +19,7 @@ void setup() {
 
 
 /*
+void init_SD() {
   char c;
   char s[100];
   int i;
