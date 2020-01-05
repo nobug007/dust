@@ -16,6 +16,41 @@ void setup() {
   Serial.begin(9600);
   init_SD();
 }
+
+
+/*
+  char c;
+  char s[100];
+  int i;
+
+  File myFile;
+
+  Serial.print("Initializing SD card...");
+
+  if (!SD.begin(D8)) {    // D8은 SD CS 핀입니다.
+    Serial.println("initialization failed!");
+    return;
+  }
+  Serial.println("initialization done.");
+
+  if (SD.exists("Config.txt")) {
+    Serial.println("Config.txt exists.");
+  } else {
+     myFile = SD.open("Config.txt", FILE_WRITE);
+
+    Serial.println("Config.txt doesn't exist. It made.");
+  }
+    myFile.write("APN=Nobug_Home\n");
+    myFile.write("PASS=12345678\n");
+    myFile.write("Name=Nobug\n");
+    myFile.write("iCal=0.001\n");
+    myFile.write("oCal=0.002\n");
+           myFile.close();
+           Serial.println("finished Config.txt");
+}
+
+*/
+
 void init_SD() {
   char c;
   char s[100];
@@ -31,16 +66,16 @@ void init_SD() {
   }
   Serial.println("initialization done.");
 
-  if (SD.exists("Test.txt")) {
+  if (SD.exists("Config.txt")) {
     Serial.println("config.txt exists.");
   } else {
     Serial.println("config.txt doesn't exist.");
   }
 
-  Serial.println("writing config.txt...");
-  myFile = SD.open("Test.txt", FILE_READ);
+  Serial.println("reading config.txt...");
+  myFile = SD.open("Config.txt", FILE_READ);
   if (myFile) {
-        Serial.println("test.txt:");
+        Serial.println("Config.txt:");
           // read from the file until there's nothing else in it:
           i = 0;
           while (myFile.available()) {
@@ -57,7 +92,7 @@ void init_SD() {
            myFile.close();
       } else {
     // if the file didn't open, print an error:
-      Serial.println("error opening test.txt");
+      Serial.println("error opening config.txt");
       }
 }
 
