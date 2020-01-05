@@ -2,7 +2,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-//    Pin 
+//   SD Card  Pin 
 //
 //   VCC  -> UV  ( 5V )
 //   CS   -> D8 ( Changable )
@@ -18,7 +18,7 @@ void setup() {
 }
 
 
-/*
+/*   컨피그 화일이 없으면 이것을 풀어 먼저 컨피그 화일을 만들어 넣고, 시작 하세요. 
 void init_SD() {
   char c;
   char s[100];
