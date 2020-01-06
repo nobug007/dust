@@ -229,7 +229,7 @@ void sendData2Server(int x, int y)
 {
   const char* host = "script.google.com";
   const int httpsPort = 443;
-  String GAS_ID = "AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp";  // Replace by your GAS service id
+  String GAS_ID = "AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c";  // Replace by your GAS service id
 
   Serial.print("connecting to ");
   Serial.println(host);
@@ -248,7 +248,7 @@ void sendData2Server(int x, int y)
   */
   String string_x     =  String(x, DEC);
   String string_y     =  String(y, DEC);
-  String url = "/macros/s/" + GAS_ID + "/exec?home=",+ DevName + "&temperature=" + string_x + "&humidity=" + string_y;
+  String url = "/macros/s/" + GAS_ID + "/exec?name=",+ DevName + "&iDust=" + string_x + "&oDust=" + string_y;
 //  String url = "/macros/s/AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp/exec?A=1";
   Serial.print("requesting URL: ");
   Serial.println(url);
