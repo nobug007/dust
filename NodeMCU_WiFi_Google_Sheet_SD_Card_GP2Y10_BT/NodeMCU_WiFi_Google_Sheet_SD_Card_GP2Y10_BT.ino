@@ -248,8 +248,8 @@ void sendData2Server(int x, int y)
   */
   String string_x     =  String(x, DEC);
   String string_y     =  String(y, DEC);
-//  String url = "/macros/s/" + GAS_ID + "/exec?temperature=" + string_x + "&humidity=" + string_y;
-  String url = "/macros/s/AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp/exec?A=1";
+  String url = "/macros/s/" + GAS_ID + "/exec?home=",+ DevName + "&temperature=" + string_x + "&humidity=" + string_y;
+//  String url = "/macros/s/AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp/exec?A=1";
   Serial.print("requesting URL: ");
   Serial.println(url);
 
