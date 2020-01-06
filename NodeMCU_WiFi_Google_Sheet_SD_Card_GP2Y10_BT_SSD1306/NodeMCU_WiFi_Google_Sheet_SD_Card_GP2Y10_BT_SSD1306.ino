@@ -233,7 +233,8 @@ void sendData2Server(int x, int y)
   const char* host = "script.google.com";
   const int httpsPort = 443;
   String GAS_ID = "AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c";  // Replace by your GAS service id
-
+//  https://script.google.com/macros/s/AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c/exec
+//https://script.google.com/macros/s/AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c/exec
   Serial.print("connecting to ");
   Serial.println(host);
   client.setInsecure();
@@ -396,6 +397,9 @@ void drawStatus() {
 }
 
 void drawGraph() {
+/*
+
+  char cTemp[10];
 
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
@@ -429,4 +433,5 @@ void drawGraph() {
   display.display();
   if (i < graphMax ) i++;
   delay(100);
+*/
 }

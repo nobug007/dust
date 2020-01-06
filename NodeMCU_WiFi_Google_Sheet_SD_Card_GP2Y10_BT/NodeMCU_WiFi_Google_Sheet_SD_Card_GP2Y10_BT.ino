@@ -69,7 +69,7 @@ void loop() {
    get_inner_dust();
    int out_Dust =   BT_Read();
    sendData2Server(dust, out_Dust);
-   delay(1000);
+   delay(10000);
 }
 //=========================================================================
 
@@ -248,7 +248,7 @@ void sendData2Server(int x, int y)
   */
   String string_x     =  String(x, DEC);
   String string_y     =  String(y, DEC);
-  String url = "/macros/s/" + GAS_ID + "/exec?name=",+ DevName + "&iDust=" + string_x + "&oDust=" + string_y;
+  String url = "/macros/s/" + GAS_ID + "/exec?name="+ DevName + "&iDust=" + string_x + "&oDust=" + string_y;
 //  String url = "/macros/s/AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp/exec?A=1";
   Serial.print("requesting URL: ");
   Serial.println(url);
