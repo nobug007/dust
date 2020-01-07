@@ -38,15 +38,14 @@ char DevName[20];
 float iCal;
 float oCal;
 
-
-
 // gp2y10 dust sensor GPIO
-
+int i=0;
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
 int ledPower = D0;         // Connect 3 led driver pins of dust sensor to Arduino D5
 int dust = 0;
- 
-
+int out_dust = 0; 
+int iDust[128];
+int oDust[128];
 //=======================================================================
 //                    Power on setup
 //=======================================================================
@@ -70,8 +69,8 @@ void setup() {
 //=======================================================================
 void loop() {
    get_inner_dust();
-   int out_Dust =   BT_Read();
-   sendData2Server(dust, out_Dust);
+   out_dust =   BT_Read();
+   sendData2Server(dust, out_dust);
    delay(1000);
 }
 //=========================================================================
@@ -233,27 +232,17 @@ void sendData2Server(int x, int y)
   const char* host = "script.google.com";
   const int httpsPort = 443;
   String GAS_ID = "AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c";  // Replace by your GAS service id
-//  https://script.google.com/macros/s/AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c/exec
-//https://script.google.com/macros/s/AKfycby1aogYleMRxnU3gLmuB9DYAU6ykKC55VfcGL-fKY85UD8Mh2c/exec
+
   Serial.print("connecting to ");
   Serial.println(host);
   client.setInsecure();
   if (!client.connect(host, httpsPort)) {
-
     Serial.println("connection failed");
     return;
   }
-/*
-  if (client.verify(fingerprint, host)) {
-  Serial.println("certificate matches");
-  } else {
-  Serial.println("certificate doesn't match");
-  }
-  */
   String string_x     =  String(x, DEC);
   String string_y     =  String(y, DEC);
   String url = "/macros/s/" + GAS_ID + "/exec?name="+ DevName + "&iDust=" + string_x + "&oDust=" + string_y;
-//  String url = "/macros/s/AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp/exec?A=1";
   Serial.print("requesting URL: ");
   Serial.println(url);
 
@@ -397,23 +386,26 @@ void drawStatus() {
 }
 
 void drawGraph() {
-/*
 
-  char cTemp[10];
+
+   char cTemp[10];
+   int iTemp, oTemp;
+   int graphMax = 100;
+   int j;
 
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
-   sprintf(cTemp,"%d",(int)dust);
+   sprintf(cTemp,"%d",dust);
    display.drawString(124,25, cTemp);
-   sprintf(cTemp,"%d",(int)oTemp);
+   sprintf(cTemp,"%d",out_dust);
    display.drawString(124,48, cTemp);
 
    if ( dust > 100 ) dust = 100 ;
    else if ( dust < 0 ) dust = 0;
-   if ( oTemp > 100 ) oTemp = 100 ;
-   else if ( oTemp < 0 ) oTemp = 0;
+   if ( out_dust > 100 ) out_dust = 100 ;
+   else if ( out_dust < 0 ) out_dust = 0;
    iTemp = map(dust,0,100,0,20);  // dust => graph high
-   oTemp = map(oTemp,0,100,0,20);  // dust => graph high
+   oTemp = map(out_dust,0,100,0,20);  // dust => graph high
 
 
    if ( i == graphMax) {
@@ -433,5 +425,4 @@ void drawGraph() {
   display.display();
   if (i < graphMax ) i++;
   delay(100);
-*/
 }
