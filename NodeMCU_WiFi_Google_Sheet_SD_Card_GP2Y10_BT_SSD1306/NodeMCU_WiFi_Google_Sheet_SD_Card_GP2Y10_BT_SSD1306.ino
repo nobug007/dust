@@ -35,8 +35,8 @@ WiFiClientSecure client;
 char ssid[20] ;
 char password[20];
 char DevName[20];
-float iCal;
-float oCal;
+int iCal;
+int oCal;
 
 // gp2y10 dust sensor GPIO
 int i=0;
@@ -313,7 +313,7 @@ float dust_check() {
 
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
-  dustDensity = (0.17 * calcVoltage - iCal )* 1000 ; // Cal 0.1
+  dustDensity = (0.17 * calcVoltage - 0.001 )* 1000 ; // Cal 0.1
   delay(500);
 
   return dustDensity;
