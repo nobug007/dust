@@ -69,7 +69,8 @@ void setup() {
 //=======================================================================
 void loop() {
    get_inner_dust();
-   out_dust =   BT_Read();
+   dust = dust - iCal ;
+   out_dust =   BT_Read() - oCal;
    sendData2Server(dust, out_dust);
    delay(1000);
 }
