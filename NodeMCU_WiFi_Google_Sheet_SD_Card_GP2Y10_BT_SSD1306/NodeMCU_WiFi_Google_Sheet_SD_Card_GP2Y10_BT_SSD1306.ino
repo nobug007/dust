@@ -60,7 +60,7 @@ void setup() {
   // BT setup
   bluetooth.begin(9600);
  // WiFi Setup
-  WiFi_Connect();
+//  WiFi_Connect();
   display_init();
 }
 

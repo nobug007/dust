@@ -11,7 +11,11 @@
 // Initialize the OLED display using Wire library
 SSD1306Wire  display(0x3c, D3, D4);  //D3=SDA  D4=SCL  As per labeling on NodeMCU
 
-
+int  wifi_status = 0;
+int  graphMax = 100;
+int iDust_Arr[100];
+int oDust_Arr[100];
+int iArr = 0;
 //=======================================================================
 //                    Power on setup
 //=======================================================================
@@ -23,6 +27,19 @@ void setup() {
   display_init();
 }
 
+
+//=======================================================================
+//                    Main Program Loop
+//=======================================================================
+void loop() {
+  for(int i = 0;i< 70 ; i++ ) {
+    drawGraph(i,70-i);
+  }
+}
+//=======================================================================
+//                    Display SSD1306 init
+//=======================================================================
+
 void display_init() {
   display.init();
   display.flipScreenVertically();
@@ -30,17 +47,12 @@ void display_init() {
   drawStatus();  //  BT check & WiFi Check
 }
 
-//=======================================================================
-//                    Main Program Loop
-//=======================================================================
-void loop() {
-}
-
 //=========================================================================
 //
 //=========================================================================
 
 void drawStatus() {
+  char wifi_String[15];
   // clear the display
    display.clear();
    // Title Display
@@ -55,8 +67,13 @@ void drawStatus() {
 
 //  if WiFi ON
   display.setTextAlignment(TEXT_ALIGN_RIGHT);
-  display.drawRect(122-display.getStringWidth("WiFi ON"),0,display.getStringWidth("WiFi ON")+6, 16);
-  display.drawString(125,2, "WiFi ON");
+  if ( wifi_status == 1 ) {
+    sprintf(wifi_String,"%S","WiFi ON");
+  } else {
+    sprintf(wifi_String,"%S","WiFi OFF");    
+  }
+  display.drawRect(122-display.getStringWidth(wifi_String),0,display.getStringWidth(wifi_String)+6, 16);
+  display.drawString(125,2, wifi_String);
 
 // Graph rectangle
    display.drawRect(0, 17, 128, 47);
@@ -67,51 +84,52 @@ void drawStatus() {
 }
 
 
-/*
-void drawGraph() {
+
+void drawGraph(int iDust, int oDust) {
+
+   int j=0;
+   char cTemp[5];
+   int iTemp, oTemp;
 
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
-   sprintf(cTemp,"%d",(int)dust);
+   display.setColor(BLACK);
+   display.fillRect(102, 20, 24, 20);
+   display.fillRect(102, 42, 24, 20);
+   
+   display.setColor(WHITE);
+   sprintf(cTemp,"%d",iDust);
    display.drawString(124,25, cTemp);
-   sprintf(cTemp,"%d",(int)oTemp);
+   sprintf(cTemp,"%d",oDust);
    display.drawString(124,48, cTemp);
 
-   if ( dust > 100 ) dust = 100 ;
-   else if ( dust < 0 ) dust = 0;
-   if ( oTemp > 100 ) oTemp = 100 ;
-   else if ( oTemp < 0 ) oTemp = 0;
-   iTemp = map(dust,0,100,0,20);  // dust => graph high
-   oTemp = map(oTemp,0,100,0,20);  // dust => graph high
+   if ( iDust > 100 ) iDust = 100 ;
+   else if ( iDust < 0 ) iDust = 0;
+   if ( oDust > 100 ) oDust = 100 ;
+   else if ( oDust < 0 ) oDust = 0;
+   iTemp = map(iDust,0,100,0,20);  // dust => graph high
+   oTemp = map(oDust,0,100,0,20);  // dust => graph high
 
 
-   if ( i == graphMax) {
+   if ( iArr == graphMax) {
      for(j=0;j<graphMax;j++) {
-       iDust[j] = iDust[j+1];
-       oDust[j] = oDust[j+1];
+       iDust_Arr[j] = iDust_Arr[j+1];
+       oDust_Arr[j] = oDust_Arr[j+1];
      }
    }
 
-   iDust[i] = iTemp;
-   oDust[i] = oTemp;
+   iDust_Arr[iArr] = iTemp;
+   oDust_Arr[iArr] = oTemp;
 
-   for(j=1;j<=i;j++) {
-      display.drawLine(j,40,j,40-iDust[j] );
-      display.drawLine(j,64,j,64-oDust[j] );
+   for(j=1;j<iArr;j++) {
+      display.setColor(BLACK);
+      display.drawLine(j,40,j,20); 
+      display.drawLine(j,64,j,44); 
+      display.setColor(WHITE);
+      display.drawLine(j,40,j,40-iDust_Arr[j] );
+      display.drawLine(j,64,j,64-oDust_Arr[j] );
    }
   display.display();
-  if (i < graphMax ) i++;
+  if (iArr < graphMax ) iArr++;
   delay(100);
 }
-
-void get_inner_dust() {
-  dust = 0;
-  for (int i=0;i<5;i++) {
-    dust += dust_check();
-  }
-  dust = dust / 5.0;
-  Serial.print("   -  5 times inner Dust density :  ");
-  Serial.println(dust);
-}
-
-*/

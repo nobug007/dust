@@ -33,8 +33,8 @@ void setup() {
 }
 
 void WiFi_Connect() {
-  char ssid[20] = "Usability_5";
-  char password[20] = "usability2019%";
+  char ssid[20] = "UXI_5";
+  char password[20] = "uxinsight\%";
   
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);

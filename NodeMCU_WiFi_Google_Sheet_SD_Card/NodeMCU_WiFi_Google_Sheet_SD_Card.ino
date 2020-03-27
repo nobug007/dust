@@ -27,6 +27,7 @@
 ////  WiFI connection
 
 WiFiClientSecure client;
+int wifi_Flag = 0;
 
 char ssid[20] ;
 char password[20];
@@ -45,13 +46,22 @@ void setup() {
   init_SD();
  // WiFi Setup
   WiFi_Connect();
+  if ( wifi_Flag == 0 ) Serial.println("WiFi Disconnected............");
+  else Serial.println("WiFi connected.");
+ 
 }
 
 //=======================================================================
 //                    Main Program Loop
 //=======================================================================
 void loop() {
-   sendData2Server(10, 11);
+   if ( wifi_Flag == 1 ) {
+    sendData2Server(10, 11);
+   }
+   else {
+    Serial.println("WiFi Disconnected............"); 
+    WiFi_Connect();  
+   }
    delay(1000);
 }
 //=========================================================================
@@ -200,10 +210,16 @@ void WiFi_Connect() {
   
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-
+  int cnt = 0;
+  wifi_Flag=1;
   while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
+        cnt ++;
+        if ( cnt > 100 ) {
+          wifi_Flag=0;
+          break;
+        }
    }
 }
 

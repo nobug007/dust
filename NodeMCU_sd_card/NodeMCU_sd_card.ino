@@ -67,14 +67,14 @@ void init_SD() {
   }
   Serial.println("initialization done.");
 
-  if (SD.exists("Config.txt")) {
+  if (SD.exists("config.txt")) {
     Serial.println("config.txt exists.");
   } else {
     Serial.println("config.txt doesn't exist.");
   }
 
   Serial.println("reading config.txt...");
-  myFile = SD.open("Config.txt", FILE_READ);
+  myFile = SD.open("config.txt", FILE_READ);
   if (myFile) {
         Serial.println("Config.txt:");
           // read from the file until there's nothing else in it:
