@@ -1,7 +1,7 @@
 //
 //  FILE : NodeMCU_WiFi_Google_Sheet_SD_Card_GP2Y10_BT_SSD1306
 //  AUTHOR : nobug (nobug007@gmail.com)
-//  CREATED : 5.1.2020
+//  CREATED : 7.1.2020
 //  HW : NodeMCU & Google ID  &  SD Card & GP2Y10 & HC06 & SSD1306
 //
 #include <string.h>
@@ -72,6 +72,7 @@ void loop() {
    dust = dust - iCal ;
    out_dust =   BT_Read() - oCal;
    sendData2Server(dust, out_dust);
+   drawGraph();
    delay(1000);
 }
 //=========================================================================
@@ -361,6 +362,7 @@ void display_init() {
 
 
 void drawStatus() {
+ 
   // clear the display
    display.clear();
    // Title Display
@@ -388,12 +390,14 @@ void drawStatus() {
 
 void drawGraph() {
 
-
+       Serial.println("                                            drawGraph()======  ");
+ 
    char cTemp[10];
    int iTemp, oTemp;
    int graphMax = 100;
    int j;
 
+   drawStatus();
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
    sprintf(cTemp,"%d",dust);
