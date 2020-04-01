@@ -1,13 +1,25 @@
 //
-//  FILE : NodeMCU_SSD1306
+//  FILE : NodeMCU_BT_HC06_SSD1306_Dust_Sensor_GP2Y10
 //  AUTHOR : nobug (nobug007@gmail.com)
-//  CREATED : 26.3.2020
-//  HW : NodeMCU & SSD1306
+//  CREATED : 27.3.2020
+//  HW : NodeMCU & SSD1306 & HC06 & GP2Y10
 //
-
+#include <string.h>
+#include <ctype.h>
 #include <SoftwareSerial.h>
 #include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"`
 #define  graphMax 100
+
+
+
+// gp2y10 dust sensor GPIO
+int measurePin = A0;      // Connect dust sensor to arduino A0 pin
+int ledPower = D0;         // Connect 3 led driver pins of dust sensor to Arduino D5
+
+int oCal = 50;
+int iCal = -105;
+// BT Port Set up
+SoftwareSerial bluetooth(D1, D2);   //  TX =  D1, RX =  D2    VCC = UV ( test ) 5V
 
 // Initialize the OLED display using Wire library
 SSD1306Wire  display(0x3c, D3, D4);  //D3=SDA  D4=SCL  As per labeling on NodeMCU
@@ -17,6 +29,10 @@ int  wifi_status = 0;
 int iDust_Arr[graphMax];
 int oDust_Arr[graphMax];
 int iArr = 0;
+
+
+
+
 //=======================================================================
 //                    Power on setup
 //=======================================================================
@@ -25,7 +41,12 @@ int iArr = 0;
 void setup() {
   delay(1000);
   Serial.begin(9600);
+  pinMode(ledPower,OUTPUT);
+  
   display_init();
+    // BT setup
+  Serial.println("BT Start");
+  bluetooth.begin(9600);
 }
 
 
@@ -33,10 +54,89 @@ void setup() {
 //                    Main Program Loop
 //=======================================================================
 void loop() {
-  for(int i = 0;i<100 ; i++ ) {
-    drawGraph(i,100-i);
-  }
+    int o_data, i_data;
+    o_data = BT_Read()+oCal;
+    i_data =  get_inner_dust()+iCal;
+    drawGraph(i_data,o_data);
+    Serial.print("Out Data : ");
+    Serial.println(o_data);
+       Serial.print("In Data : ");
+    Serial.println(i_data);
+    delay(10000);
 }
+
+//=======================================================================
+//                    Bluetooth Read
+//=======================================================================
+
+int BT_Read() {
+  char out_data[10];
+  int out_i=0;
+  char Flag = 'N';
+
+  while (bluetooth.available()) {
+      Serial.print(".");
+    // 수신 받은 데이터 저장
+    out_data[out_i] = (char)bluetooth.read();
+    out_data[++out_i] = NULL;
+    Flag = 'Y';
+    delay(100);
+  }
+  
+  if ( Flag == 'Y' ) {
+       // 수신된 데이터 시리얼 모니터로 출력
+        Serial.print("BT Read Out Data :  ");
+        Serial.println(out_data);
+        Flag = 'N';
+  }
+  return atoi(out_data);
+}
+
+//=======================================================================
+//                    Get Dust inform
+//=======================================================================
+
+int get_inner_dust() {
+
+  int dust = 0;
+  
+  for (int i=0;i<5;i++) {
+    dust += dust_check();
+  }
+  dust = dust / 5.0;
+  Serial.print("   -  5 times inner Dust density :  ");
+  Serial.println(dust);
+  return (int)dust;
+}
+
+
+float dust_check() {
+
+  int samplingTime = 280;
+  int deltaTime = 40;
+  int sleepTime = 9680;
+
+  float voMeasured = 0.0;
+  float calcVoltage = 0.0;
+  float dustDensity = 0.0;
+
+  digitalWrite(ledPower,LOW );
+  delayMicroseconds(samplingTime);
+
+  voMeasured = analogRead( measurePin );
+
+  delayMicroseconds( deltaTime );
+  digitalWrite( ledPower , HIGH );
+  delayMicroseconds(sleepTime );
+
+  calcVoltage = voMeasured * ( 5.0 / 1024.0 );
+
+  dustDensity = (0.17 * calcVoltage + 0.0005 )* 1000 ; // Cal 0.1
+  delay(500);
+
+  return dustDensity;
+}
+
 //=======================================================================
 //                    Display SSD1306 init
 //=======================================================================
@@ -90,7 +190,7 @@ void drawGraph(int iDust, int oDust) {
 
    int j=0;
    char cTemp[5];
-   int iTemp, oTemp;
+
 
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
@@ -124,10 +224,10 @@ void drawGraph(int iDust, int oDust) {
    for(j=0;j<iArr;j++) {
       display.setColor(BLACK);
       display.drawLine(j+1,40,j+1,20); 
-      display.drawLine(j+1,64,j+1,44); 
+      display.drawLine(j+1,63,j+1,42); 
       display.setColor(WHITE);
       display.drawLine(j+1,40,j+1,40-iDust_Arr[j] );
-      display.drawLine(j+1,64,j+1,64-oDust_Arr[j] );
+      display.drawLine(j+1,63,j+1,63-oDust_Arr[j] );
    }
 
   display.display();

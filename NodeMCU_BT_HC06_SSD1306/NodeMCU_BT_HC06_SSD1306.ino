@@ -1,13 +1,18 @@
 //
-//  FILE : NodeMCU_SSD1306
+//  FILE : NodeMCU_BT_HC06_SSD1306
 //  AUTHOR : nobug (nobug007@gmail.com)
-//  CREATED : 26.3.2020
-//  HW : NodeMCU & SSD1306
+//  CREATED : 27.3.2020
+//  HW : NodeMCU & SSD1306 & HC06
 //
-
+#include <string.h>
+#include <ctype.h>
 #include <SoftwareSerial.h>
 #include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"`
 #define  graphMax 100
+
+
+// BT Port Set up
+SoftwareSerial bluetooth(D1, D2);   //  TX =  D1, RX =  D2    VCC = UV ( test ) 5V
 
 // Initialize the OLED display using Wire library
 SSD1306Wire  display(0x3c, D3, D4);  //D3=SDA  D4=SCL  As per labeling on NodeMCU
@@ -17,6 +22,9 @@ int  wifi_status = 0;
 int iDust_Arr[graphMax];
 int oDust_Arr[graphMax];
 int iArr = 0;
+
+
+int oCal = 50;
 //=======================================================================
 //                    Power on setup
 //=======================================================================
@@ -26,6 +34,9 @@ void setup() {
   delay(1000);
   Serial.begin(9600);
   display_init();
+    // BT setup
+  Serial.println("BT Start");
+  bluetooth.begin(9600);
 }
 
 
@@ -33,10 +44,42 @@ void setup() {
 //                    Main Program Loop
 //=======================================================================
 void loop() {
-  for(int i = 0;i<100 ; i++ ) {
-    drawGraph(i,100-i);
-  }
+    int o_data, i_data;
+    o_data = BT_Read()+oCal;
+    i_data = (int)random(100);
+    drawGraph(i_data,o_data);
+    Serial.print("Out Data : ");
+    Serial.println(o_data);
+    delay(10000);
 }
+
+//=======================================================================
+//                    Bluetooth Read
+//=======================================================================
+
+int BT_Read() {
+  char out_data[10];
+  int out_i=0;
+  char Flag = 'N';
+
+  while (bluetooth.available()) {
+      Serial.print(".");
+    // 수신 받은 데이터 저장
+    out_data[out_i] = (char)bluetooth.read();
+    out_data[++out_i] = NULL;
+    Flag = 'Y';
+    delay(100);
+  }
+  
+  if ( Flag == 'Y' ) {
+       // 수신된 데이터 시리얼 모니터로 출력
+        Serial.print("BT Read Out Data :  ");
+        Serial.println(out_data);
+        Flag = 'N';
+  }
+  return atoi(out_data);
+}
+
 //=======================================================================
 //                    Display SSD1306 init
 //=======================================================================
@@ -124,10 +167,10 @@ void drawGraph(int iDust, int oDust) {
    for(j=0;j<iArr;j++) {
       display.setColor(BLACK);
       display.drawLine(j+1,40,j+1,20); 
-      display.drawLine(j+1,64,j+1,44); 
+      display.drawLine(j+1,63,j+1,42); 
       display.setColor(WHITE);
       display.drawLine(j+1,40,j+1,40-iDust_Arr[j] );
-      display.drawLine(j+1,64,j+1,64-oDust_Arr[j] );
+      display.drawLine(j+1,63,j+1,63-oDust_Arr[j] );
    }
 
   display.display();
