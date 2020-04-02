@@ -170,7 +170,7 @@ float dust_check() {
   calcVoltage = voMeasured * ( 5.0 / 1024.0 );
 
   dustDensity = (0.17 * calcVoltage + 0.0005 )* 1000 ; // Cal 0.1
-  delay(500);
+  delay(3000);
 
   return dustDensity;
 }
@@ -388,6 +388,8 @@ void Config_data(char s[200]){
     case 'U' :
       sprintf(URL,"%s",s_value);
       Serial.println(URL);
+      URL[strlen(URL)-1] = NULL;
+
       break;
   }
   Serial.print("Title = ");
@@ -440,13 +442,13 @@ void sendData2Server(int x, int y)
   String string_y     =  String(y, DEC);
 //  String url = "/macros/s/" + GAS_ID + "/exec?temperature=" + string_x + "&humidity=" + string_y;
   String url1 = "/macros/s/";
-  String url2 = "/exec?A=1";
+  String url2 = "/exec?temperature=" + string_x + "&humidity=" + string_y;
   Serial.print("requesting URL: ");
   Serial.print(url1);
   Serial.print(URL);
   Serial.println(url2);
 
-  client.print(String("GET ") + url1 + URL + url2 + " HTTP/1.1\r\n" +
+  client.print(String("GET ") + url1 + URL + "/exec?temperature=" + string_x + "&humidity=" + string_y+ "&home=nobug"+" HTTP/1.1\r\n" +
          "Host: " + host + "\r\n" +
          "User-Agent: BuildFailureDetectorESP8266\r\n" +
          "Connection: close\r\n\r\n");

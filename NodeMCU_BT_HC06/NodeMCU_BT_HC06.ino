@@ -10,7 +10,9 @@
 
 // BT Port Set up
 SoftwareSerial bluetooth(D1, D2);   //  TX =  D1, RX =  D2    VCC = UV ( test ) 5V
-
+int oCal = 0;
+int out_dust;
+int bt_flag;
 
 //=======================================================================
 //                    Power on setup
@@ -30,6 +32,16 @@ void setup() {
 //=======================================================================
 void loop() {
   BT_Read();
+  if ( oCal == out_dust ) bt_flag = 1;   // disconnected
+  else bt_flag = 0;                      // connected
+
+  check_BT_State();
+}
+
+void check_BT_State() {
+  if ( bt_flag == 1 ) Serial.println("BT Connect Fail.......");
+  else Serial.println("............BT Connect Success.......");
+  delay(3000);
 }
 //=======================================================================
 //                    Bluetooth Read
@@ -55,5 +67,6 @@ void BT_Read() {
         Serial.println(out_data);
         Flag = 'N';
   }
+  out_dust = atoi(out_data);
 }
 //=========================================================================
