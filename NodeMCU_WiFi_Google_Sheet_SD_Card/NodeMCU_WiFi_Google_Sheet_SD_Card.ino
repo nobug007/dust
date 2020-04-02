@@ -32,8 +32,10 @@ int wifi_Flag = 0;
 char ssid[20] ;
 char password[20];
 char DevName[20];
-float iCal;
-float oCal;
+int iCal;
+int oCal;
+int DelayTime;
+char URL[100];
 
 //=======================================================================
 //                    Power on setup
@@ -192,12 +194,21 @@ void Config_data(char s[100]){
     case 'i' :
       sprintf(temp,"%s",s_value);
       Serial.println(temp);
-      iCal = atof(temp);
+      iCal = atoi(temp);
       break;
     case 'o' :
       sprintf(temp,"%s",s_value);
       Serial.println(temp);
-      oCal = atof(temp);
+      oCal = atoi(temp);
+      break;
+    case 'T' :
+      sprintf(temp,"%s",s_value);
+      Serial.println(temp);
+      DelayTime = atoi(temp) * 1000;  // Sec
+      break;
+    case 'U' :
+      sprintf(URL,"%s",s_value);
+      Serial.println(URL);
       break;
   }
   Serial.print("Title = ");
@@ -209,7 +220,8 @@ void Config_data(char s[100]){
 void WiFi_Connect() {
   
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
+//  WiFi.begin(ssid, password);
+    WiFi.begin("UXI_6", "uxinsight\^");
   int cnt = 0;
   wifi_Flag=1;
   while (WiFi.status() != WL_CONNECTED) {
@@ -248,11 +260,14 @@ void sendData2Server(int x, int y)
   String string_x     =  String(x, DEC);
   String string_y     =  String(y, DEC);
 //  String url = "/macros/s/" + GAS_ID + "/exec?temperature=" + string_x + "&humidity=" + string_y;
-  String url = "/macros/s/AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp/exec?A=1";
+  String url1 = "/macros/s/";
+  String url2 = "/exec?A=1";
   Serial.print("requesting URL: ");
-  Serial.println(url);
+  Serial.print(url1);
+  Serial.print(URL);
+  Serial.println(url2);
 
-  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+  client.print(String("GET ") + url1 + URL + url2 + " HTTP/1.1\r\n" +
          "Host: " + host + "\r\n" +
          "User-Agent: BuildFailureDetectorESP8266\r\n" +
          "Connection: close\r\n\r\n");

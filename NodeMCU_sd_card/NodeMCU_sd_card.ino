@@ -18,43 +18,9 @@ void setup() {
 }
 
 
-/*   컨피그 화일이 없으면 이것을 풀어 먼저 컨피그 화일을 만들어 넣고, 시작 하세요. 
 void init_SD() {
   char c;
-  char s[100];
-  int i;
-
-  File myFile;
-
-  Serial.print("Initializing SD card...");
-
-  if (!SD.begin(D8)) {    // D8은 SD CS 핀입니다.
-    Serial.println("initialization failed!");
-    return;
-  }
-  Serial.println("initialization done.");
-
-  if (SD.exists("Config.txt")) {
-    Serial.println("Config.txt exists.");
-  } else {
-     myFile = SD.open("Config.txt", FILE_WRITE);
-
-    Serial.println("Config.txt doesn't exist. It made.");
-  }
-    myFile.write("APN=Nobug_Home\n");
-    myFile.write("PASS=12345678\n");
-    myFile.write("Name=Nobug\n");
-    myFile.write("iCal=0.001\n");
-    myFile.write("oCal=0.002\n");
-           myFile.close();
-           Serial.println("finished Config.txt");
-}
-
-*/
-
-void init_SD() {
-  char c;
-  char s[100];
+  char s[200];
   int i;
 
   File myFile;
@@ -97,10 +63,10 @@ void init_SD() {
       }
 }
 
-void Config_data(char s[100]){
+void Config_data(char s[200]){
   int j=0,k=0;
   char title[50];
-  char s_value[50];
+  char s_value[100];
   char flag = 'T';
   while(s[j] != NULL ) {
      if ( s[j] == '=' ) {

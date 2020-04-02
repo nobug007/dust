@@ -1,13 +1,18 @@
 //
-//  FILE : NodeMCU_BT_HC06_SSD1306_Dust_Sensor_GP2Y10
+//  FILE : NodeMCU_BT_HC06_SSD1306_Dust_Sensor_GP2Y10_SD_CARD_WiFi_Google_Sheet
 //  AUTHOR : nobug (nobug007@gmail.com)
-//  CREATED : 27.3.2020
-//  HW : NodeMCU & SSD1306 & HC06 & GP2Y10
+//  CREATED : 01.04.2020
+//  HW : NodeMCU & SSD1306 & HC06 & GP2Y10 & SD_Card
 //
 #include <string.h>
 #include <ctype.h>
+#include <ESP8266WiFi.h>
+#include <Wire.h>
 #include <SoftwareSerial.h>
 #include "SSD1306Wire.h" // legacy include: `#include "SSD1306.h"`
+#include <WiFiClientSecure.h>
+#include <SPI.h>   // SD Card  Header 
+#include <SD.h>    
 #define  graphMax 100
 
 
@@ -31,6 +36,24 @@ int oDust_Arr[graphMax];
 int iArr = 0;
 
 
+//   SD Card  Pin 
+//
+//   VCC  -> UV  ( 5V )
+//   CS   -> D8 ( Changable )
+//   SCK  -> D5
+//   MOSI -> D7
+//   MISO -> D6
+
+////  WiFI connection
+
+WiFiClientSecure client;
+int wifi_Flag = 0;
+
+char ssid[20] ;
+char password[20];
+char DevName[20];
+int DelayTime;
+char URL[100];
 
 
 //=======================================================================
@@ -43,10 +66,18 @@ void setup() {
   Serial.begin(9600);
   pinMode(ledPower,OUTPUT);
   
-  display_init();
+
     // BT setup
   Serial.println("BT Start");
   bluetooth.begin(9600);
+  init_SD();
+ // WiFi Setup
+  WiFi_Connect();
+  if ( wifi_Flag == 0 ) Serial.println("WiFi Disconnected............");
+  else Serial.println("WiFi connected.");
+
+
+  display_init();
 }
 
 
@@ -62,7 +93,14 @@ void loop() {
     Serial.println(o_data);
        Serial.print("In Data : ");
     Serial.println(i_data);
-    delay(10000);
+    if ( wifi_Flag == 1 ) {
+    sendData2Server(i_data,o_data);
+   }
+   else {
+    Serial.println("WiFi Disconnected............"); 
+    WiFi_Connect();  
+   }
+   delay(DelayTime);
 }
 
 //=======================================================================
@@ -235,4 +273,204 @@ void drawGraph(int iDust, int oDust) {
 
   Serial.println( iArr);
   delay(100);
+}
+
+
+//=========================================================================
+//    SD Card
+//=========================================================================
+
+
+void init_SD() {
+  char c;
+  char s[200];
+  int i;
+
+  File myFile;
+
+  Serial.print("Initializing SD card...");
+
+  if (!SD.begin(D8)) {    // D8은 SD CS 핀입니다.
+    Serial.println("initialization failed!");
+    return;
+  }
+  Serial.println("initialization done.");
+
+  if (SD.exists("Config.txt")) {
+    Serial.println("config.txt exists.");
+  } else {
+    Serial.println("config.txt doesn't exist.");
+  }
+
+  Serial.println("reading config.txt...");
+  myFile = SD.open("Config.txt", FILE_READ);
+  if (myFile) {
+        Serial.println("Config.txt:");
+          // read from the file until there's nothing else in it:
+          i = 0;
+          while (myFile.available()) {
+              c = myFile.read();
+              if ( c == '\n' ) { 
+                Config_data(s);
+                i= 0;
+              } else {
+                s[i++] = c;
+                s[i] = NULL;
+              }
+          }
+  // close the file:
+           myFile.close();
+      } else {
+    // if the file didn't open, print an error:
+      Serial.println("error opening config.txt");
+      }
+}
+
+void Config_data(char s[200]){
+  int j=0,k=0;
+  char title[50];
+  char s_value[100];
+  char temp[10];
+  char flag = 'T';
+  while(s[j] != NULL ) {
+     if ( s[j] == '=' ) {
+        flag = 'F';
+        k=0;
+        j++;
+     }
+     if ( flag == 'T' ){
+       title[k] = s[j];
+       title[k+1] = NULL;
+     } else {
+       s_value[k] = s[j];
+       s_value[k+1] = NULL;
+     } 
+     k++;
+     j++;
+  }
+  
+//  APN=UXI_6
+//  PASS=uxinsight\^
+//  Name=Nobug
+//  iCal=-115
+//  oCal=60
+//  Time=30  
+//  URL=AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp
+
+  switch(title[0]) {
+    case 'A' :
+      sprintf(ssid,"%s",s_value);
+      Serial.println(ssid);
+      break;
+    case 'P' :
+      sprintf(password,"%s",s_value);
+      Serial.println(password);
+      break;
+    case 'N' :
+      sprintf(DevName,"%s",s_value);
+      Serial.println(DevName);
+      break;
+    case 'i' :
+      sprintf(temp,"%s",s_value);
+      Serial.println(temp);
+      iCal = atoi(temp);
+      break;
+    case 'o' :
+      sprintf(temp,"%s",s_value);
+      Serial.println(temp);
+      oCal = atoi(temp);
+      break;
+    case 'T' :
+      sprintf(temp,"%s",s_value);
+      Serial.println(temp);
+      DelayTime = atoi(temp) * 1000;  // Sec
+      break;
+    case 'U' :
+      sprintf(URL,"%s",s_value);
+      Serial.println(URL);
+      break;
+  }
+  Serial.print("Title = ");
+  Serial.print(title);
+  Serial.print("       Value = ");
+  Serial.println(s_value); 
+}
+
+void WiFi_Connect() {
+  
+  WiFi.mode(WIFI_STA);
+//  WiFi.begin(ssid, password);
+    WiFi.begin("UXI_6", "uxinsight\^");
+  int cnt = 0;
+  wifi_Flag=1;
+  while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+        cnt ++;
+        if ( cnt > 100 ) {
+          wifi_Flag=0;
+          break;
+        }
+   }
+}
+
+
+void sendData2Server(int x, int y)
+{
+  const char* host = "script.google.com";
+  const int httpsPort = 443;
+  String GAS_ID = "AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp";  // Replace by your GAS service id
+
+  Serial.print("connecting to ");
+  Serial.println(host);
+  client.setInsecure();
+  if (!client.connect(host, httpsPort)) {
+
+    Serial.println("connection failed");
+    return;
+  }
+/*
+  if (client.verify(fingerprint, host)) {
+  Serial.println("certificate matches");
+  } else {
+  Serial.println("certificate doesn't match");
+  }
+  */
+  String string_x     =  String(x, DEC);
+  String string_y     =  String(y, DEC);
+//  String url = "/macros/s/" + GAS_ID + "/exec?temperature=" + string_x + "&humidity=" + string_y;
+  String url1 = "/macros/s/";
+  String url2 = "/exec?A=1";
+  Serial.print("requesting URL: ");
+  Serial.print(url1);
+  Serial.print(URL);
+  Serial.println(url2);
+
+  client.print(String("GET ") + url1 + URL + url2 + " HTTP/1.1\r\n" +
+         "Host: " + host + "\r\n" +
+         "User-Agent: BuildFailureDetectorESP8266\r\n" +
+         "Connection: close\r\n\r\n");
+
+  Serial.println("request sent");
+  while (client.connected()) {
+  String line = client.readStringUntil('\n');
+  if (line == "\r") {
+     Serial.println("=====111=====");
+     Serial.println(line);
+    Serial.println("====111======");
+    Serial.println("headers received");
+    break;
+  }
+  }
+  String line = client.readStringUntil('\n');
+  if (line.startsWith("{\"state\":\"success\"")) {
+  Serial.println("esp8266/Arduino CI successfull!");
+  } else {
+  Serial.println("esp8266/Arduino CI has failed");
+  }
+  Serial.println("reply was:");
+  Serial.println("==========");
+  Serial.println(line);
+  Serial.println("==========");
+  Serial.println("closing connection");
 }

@@ -12,7 +12,7 @@
 
 #define rxBT 6
 #define txBT 7
-
+#define DelayTime 30000
 int i=0;
 float dust = 0.0;
 
@@ -47,7 +47,7 @@ void loop() {
   get_out_dust();
   Serial_Print();
   BT_Send();
-  delay(2500);  // send cycle 
+  delay(DelayTime);  // send cycle 
 }
 
 
