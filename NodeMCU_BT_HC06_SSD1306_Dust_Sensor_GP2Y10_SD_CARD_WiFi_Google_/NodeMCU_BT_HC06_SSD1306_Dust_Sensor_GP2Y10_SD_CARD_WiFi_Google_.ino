@@ -404,8 +404,8 @@ void Config_data(char s[200]){
 void WiFi_Connect() {
   
   WiFi.mode(WIFI_STA);
-//  WiFi.begin(ssid, password);
-    WiFi.begin("UXI_6", "uxinsight\^");
+  WiFi.begin(ssid, password);
+//    WiFi.begin("UXI_6", "uxinsight\^");
   int cnt = 0;
   wifi_Flag=1;
   while (WiFi.status() != WL_CONNECTED) {
@@ -424,7 +424,7 @@ void sendData2Server(int x, int y)
 {
   const char* host = "script.google.com";
   const int httpsPort = 443;
-  String GAS_ID = "AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp";  // Replace by your GAS service id
+//  String GAS_ID = "AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp";  // Replace by your GAS service id
 
   Serial.print("connecting to ");
   Serial.println(host);
