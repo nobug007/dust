@@ -197,7 +197,7 @@ void drawStatus() {
    // Title Display
 
   display.setTextAlignment(TEXT_ALIGN_CENTER);
-  display.drawString(64,2, "DUST");
+  display.drawString(64,2, DevName);
 
 //  if BT ON
   display.setTextAlignment(TEXT_ALIGN_LEFT);
@@ -206,6 +206,9 @@ void drawStatus() {
 
 //  if WiFi ON
   display.setTextAlignment(TEXT_ALIGN_RIGHT);
+
+  wifi_status = 1; /// 지울것..
+  
   if ( wifi_status == 1 ) {
     sprintf(wifi_String,"%S","WiFi ON");
   } else {
@@ -442,13 +445,13 @@ void sendData2Server(int x, int y)
   String string_y     =  String(y, DEC);
 //  String url = "/macros/s/" + GAS_ID + "/exec?temperature=" + string_x + "&humidity=" + string_y;
   String url1 = "/macros/s/";
-  String url2 = "/exec?temperature=" + string_x + "&humidity=" + string_y;
+  String url2 = "/exec?iDust=" + string_x + "&oDust=" + string_y +  "&name="+DevName ;
   Serial.print("requesting URL: ");
   Serial.print(url1);
   Serial.print(URL);
   Serial.println(url2);
 
-  client.print(String("GET ") + url1 + URL + "/exec?temperature=" + string_x + "&humidity=" + string_y+ "&home=nobug"+" HTTP/1.1\r\n" +
+  client.print(String("GET ") + url1 + URL + url2 +" HTTP/1.1\r\n" +
          "Host: " + host + "\r\n" +
          "User-Agent: BuildFailureDetectorESP8266\r\n" +
          "Connection: close\r\n\r\n");
