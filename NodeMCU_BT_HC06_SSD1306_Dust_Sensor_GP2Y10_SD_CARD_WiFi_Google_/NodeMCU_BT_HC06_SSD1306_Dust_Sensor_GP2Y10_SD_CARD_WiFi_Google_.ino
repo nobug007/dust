@@ -404,8 +404,9 @@ void Config_data(char s[200]){
 void WiFi_Connect() {
   
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-//    WiFi.begin("UXI_6", "uxinsight\^");
+  sprintf(password,"%s","uxinsight^");
+//  WiFi.begin(ssid, password);
+    WiFi.begin(ssid     , "uxinsight\^");
   int cnt = 0;
   wifi_Flag=1;
   while (WiFi.status() != WL_CONNECTED) {
