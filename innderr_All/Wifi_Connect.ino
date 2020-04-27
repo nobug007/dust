@@ -1,9 +1,9 @@
 void WiFi_Connect() {
   
   WiFi.mode(WIFI_STA);
-  sprintf(password,"%s","uxinsight^");
-//  WiFi.begin(ssid, password);
-    WiFi.begin("UXI_6" , "uxinsight\^");
+
+  WiFi.begin(ssid, password);
+//    WiFi.begin("UXI_6" , "uxinsight\^");
   int cnt = 0;
   wifi_Flag=1;
   while (WiFi.status() != WL_CONNECTED) {
@@ -11,9 +11,9 @@ void WiFi_Connect() {
         Serial.print(".");
         cnt ++;
         if ( cnt > 100 ) {
-          wifi_Flag=0;
+//          wifi_Flag=0;
           break;
-        }
+        } else wifi_Flag = 1;
    }
 }
 

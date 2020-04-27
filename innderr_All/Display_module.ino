@@ -20,7 +20,11 @@ void drawStatus() {
    // Title Display
 
   display.setTextAlignment(TEXT_ALIGN_CENTER);
-  display.drawString(64,2, DevName);
+  Serial.print("=================================================== ");
+  Serial.print(DevName);
+  Serial.println(" ===================================================");
+  
+  display.drawString(64,2,DevName);
 
 //  if BT ON
   display.setTextAlignment(TEXT_ALIGN_LEFT);
