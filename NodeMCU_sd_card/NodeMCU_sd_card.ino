@@ -27,20 +27,23 @@ void init_SD() {
 
   Serial.print("Initializing SD card...");
 
-  if (!SD.begin(D8)) {    // D8은 SD CS 핀입니다.
+  int Z;
+  Z=SD.begin(D8);
+  if (!Z) {    // D8은 SD CS 핀입니다.
     Serial.println("initialization failed!");
+    Serial.println(Z);
     return;
   }
   Serial.println("initialization done.");
 
-  if (SD.exists("config.txt")) {
+  if (SD.exists("Config.txt")) {
     Serial.println("config.txt exists.");
   } else {
     Serial.println("config.txt doesn't exist.");
   }
 
   Serial.println("reading config.txt...");
-  myFile = SD.open("config.txt", FILE_READ);
+  myFile = SD.open("Config.txt", FILE_READ);
   if (myFile) {
         Serial.println("Config.txt:");
           // read from the file until there's nothing else in it:

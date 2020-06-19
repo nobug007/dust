@@ -1,19 +1,17 @@
 void WiFi_Connect() {
-  
+  wifi_Flag = 1;
   WiFi.mode(WIFI_STA);
 
-  WiFi.begin(ssid, password);
-//    WiFi.begin("UXI_6" , "uxinsight\^");
+//  WiFi.begin(ssid, password);
+    WiFi.begin("UXI_6" , "uxinsight\^");
   int cnt = 0;
-  wifi_Flag=1;
   while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
         cnt ++;
         if ( cnt > 100 ) {
-//          wifi_Flag=0;
           break;
-        } else wifi_Flag = 1;
+        } 
    }
 }
 
@@ -28,10 +26,12 @@ void sendData2Server(int x, int y)
   Serial.println(host);
   client.setInsecure();
   if (!client.connect(host, httpsPort)) {
-
     Serial.println("connection failed");
+    wifi_Flag=1;
+    WiFi_Connect();
     return;
   }
+    wifi_Flag=0;
 /*
   if (client.verify(fingerprint, host)) {
   Serial.println("certificate matches");

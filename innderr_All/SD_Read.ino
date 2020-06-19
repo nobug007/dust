@@ -14,15 +14,17 @@ void init_SD() {
 
   if (!SD.begin(D8)) {    // D8은 SD CS 핀입니다.
     Serial.println("initialization failed!");
-    return;
+ 
+     return;
   }
-  Serial.println("initialization done.");
+  Serial.println("initialization done.");   
 
   if (SD.exists("Config.txt")) {
     Serial.println("config.txt exists.");
   } else {
     Serial.println("config.txt doesn't exist.");
   }
+  
 
   Serial.println("reading config.txt...");
   myFile = SD.open("Config.txt", FILE_READ);
