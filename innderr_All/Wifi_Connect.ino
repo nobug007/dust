@@ -1,5 +1,5 @@
 void WiFi_Connect() {
-  wifi_Flag = 1;
+  wifi_Flag = 0;
   WiFi.mode(WIFI_STA);
 
 //  WiFi.begin(ssid, password);
