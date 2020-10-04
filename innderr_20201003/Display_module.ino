@@ -1,7 +1,7 @@
 //=======================================================================
 //                    Display SSD1306 init
 //=======================================================================
-/*
+
 void display_init() {
   display.init();
   display.flipScreenVertically();
@@ -40,9 +40,9 @@ void drawStatus() {
 //  if WiFi ON
   display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
- // wifi_status = 1; /// 지울것..
+ // wifi_Flag = 1; /// 지울것..
   
-  if ( wifi_status == 1 ) {
+  if ( wifi_Flag == 1 ) {
     sprintf(wifi_String,"%S","WiFi ON");
   } else {
     sprintf(wifi_String,"%S","WiFi OFF");    
@@ -110,5 +110,3 @@ void drawGraph(int iDust, int oDust) {
   Serial.println( iArr);
   delay(100);
 }
-
-*/

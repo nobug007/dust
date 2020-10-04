@@ -47,13 +47,13 @@ int iArr = 0;
 ////  WiFI connection
 
 //WiFiClientSecure client;
-//int wifi_Flag = 0;
+int wifi_Flag = 0;
 
-//char ssid[20] ;
-//char password[20];
-//char DevName[20];
-//int DelayTime;
-//char URL[100];
+char ssid[20] ;
+char password[20];
+char DevName[20];
+int DelayTime;
+char URL[100];
 
 int bluetooth_flag = 0;
 
