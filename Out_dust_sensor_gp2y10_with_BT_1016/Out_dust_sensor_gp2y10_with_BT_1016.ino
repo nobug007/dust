@@ -23,7 +23,7 @@ String btString;
 
 ///////////////////////    dust sensor   GP2Y10   /////////////////
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
-int ledPower = 13;         // Connect 3 led driver pins of dust sensor to Arduino D2
+int ledPower = 5;         // Connect 3 led driver pins of dust sensor to Arduino D2
 
 int samplingTime = 280;
 int deltaTime = 40;

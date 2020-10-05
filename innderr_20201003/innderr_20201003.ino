@@ -1,5 +1,4 @@
-          
-           //
+//
 //  FILE : NodeMCU_BT_HC06_SSD1306_Dust_Sensor_GP2Y10_SD_CARD_WiFi_Google_Sheet
 //  AUTHOR : nobug (nobug007@gmail.com)
 //  CREATED : 01.04.2020
@@ -30,7 +29,7 @@ SoftwareSerial bluetooth(D1, D2);   //  TX =  D1, RX =  D2    VCC = UV ( test ) 
 // Initialize the OLED display using Wire library
 SSD1306Wire  display(0x3c, D3, D4);  //D3=SDA  D4=SCL  As per labeling on NodeMCU
 
-int  wifi_status = 0;
+//int  wifi_status = 0;
 
 int iDust_Arr[graphMax];
 int oDust_Arr[graphMax];
@@ -47,7 +46,7 @@ int iArr = 0;
 
 ////  WiFI connection
 
-WiFiClientSecure client;
+//WiFiClientSecure client;
 int wifi_Flag = 0;
 
 char ssid[20] ;
@@ -64,7 +63,6 @@ int bluetooth_flag = 0;
 
 
 void setup() {
-  delay(1000);
   Serial.begin(9600);
   pinMode(ledPower,OUTPUT);
   
@@ -72,14 +70,14 @@ void setup() {
     // BT setup
   Serial.println("BT Start");
   bluetooth.begin(9600);
-  init_SD();
+//  init_SD();
 
-  display_init();
+//  display_init();
   
   // WiFi Setup
-  WiFi_Connect();
-  if ( wifi_Flag == 0 ) Serial.println("WiFi Disconnected............");
-  else Serial.println("WiFi connected.");
+//  WiFi_Connect();
+//  if ( wifi_Flag == 0 ) Serial.println("WiFi Disconnected............");
+//  else Serial.println("WiFi connected.");
 
 
 }
