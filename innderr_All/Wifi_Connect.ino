@@ -3,7 +3,9 @@ void WiFi_Connect() {
   WiFi.mode(WIFI_STA);
 
 //  WiFi.begin(ssid, password);
-    WiFi.begin("UXI_6" , "uxinsight\^");
+    WiFi.begin("UXI_6","uxinsight\^");
+
+    
   int cnt = 0;
   while (WiFi.status() != WL_CONNECTED) {
         delay(500);
@@ -28,7 +30,7 @@ void sendData2Server(int x, int y)
   if (!client.connect(host, httpsPort)) {
     Serial.println("connection failed");
     wifi_Flag=1;
-    WiFi_Connect();
+   WiFi_Connect();
     return;
   }
     wifi_Flag=0;
