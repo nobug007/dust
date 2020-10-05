@@ -16,7 +16,6 @@
 #define  graphMax 100
 
 
-
 // gp2y10 dust sensor GPIO
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
 int ledPower = D0;         // Connect 3 led driver pins of dust sensor to Arduino D5
@@ -51,8 +50,8 @@ int wifi_Flag = 0;
 
 char ssid[20] ;
 char password[20];
-char DevName[20];
-int DelayTime;
+char DevName[20]= "dust";
+int DelayTime = 30000;
 char URL[100];
 
 int bluetooth_flag = 0;
@@ -70,14 +69,10 @@ void setup() {
     // BT setup
   Serial.println("BT Start");
   bluetooth.begin(9600);
-//  init_SD();
-
-//  display_init();
+  display_init();
   
-  // WiFi Setup
+//  WiFi Setup
 //  WiFi_Connect();
 //  if ( wifi_Flag == 0 ) Serial.println("WiFi Disconnected............");
 //  else Serial.println("WiFi connected.");
-
-
 }

@@ -9,9 +9,6 @@ void display_init() {
   drawStatus();  //  BT check & WiFi Check
 }
 
-//=========================================================================
-//
-//=========================================================================
 
 void drawStatus() {
   char wifi_String[15];
@@ -20,9 +17,9 @@ void drawStatus() {
    // Title Display
 
   display.setTextAlignment(TEXT_ALIGN_CENTER);
-  Serial.print("=================================================== ");
+  Serial.print("=============================== ");
   Serial.print(DevName);
-  Serial.println(" ===================================================");
+  Serial.println(" ===============================");
   
   display.drawString(64,2,DevName);
 
@@ -55,9 +52,12 @@ void drawStatus() {
    display.drawLine(0, 40, 128, 40);     //  47/2 = 23
    display.drawLine(100, 18, 100, 63);     //  47/2 = 23
 
-//  display.display();
+  display.display();
 }
 
+//=========================================================================
+//    그래프 그리기
+//=========================================================================
 
 
 void drawGraph(int iDust, int oDust) {
@@ -107,6 +107,6 @@ void drawGraph(int iDust, int oDust) {
   display.display();
   if (iArr < graphMax-1 ) iArr++;
 
-  Serial.println( iArr);
-  delay(100);
+//  Serial.println( iArr);
+//  delay(100);
 }
