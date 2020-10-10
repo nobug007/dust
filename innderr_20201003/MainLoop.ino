@@ -7,17 +7,18 @@ void loop() {
     o_data = BT_Read()+oCal;
     if ( oCal == o_data ) { 
       bluetooth_flag = 0;
-      drawStatus();
+//      drawStatus();
     } else {
       bluetooth_flag = 1;
-      drawStatus();
+//      drawStatus();
     }
 
     i_data =  get_inner_dust()+iCal;
     drawGraph(i_data,o_data);
-    Serial.print("Out Data : ");
-    Serial.println(bluetooth_flag);
-       Serial.print("In Data : ");
+//    drawGraph(i_data,10);
+      Serial.print("Out Data : ");
+    Serial.print(o_data);
+       Serial.print("              In Data : ");
     Serial.println(i_data);
     
 /*   
@@ -32,5 +33,5 @@ void loop() {
    }
 */
    o_data = 0;
-   delay(1000);
+   delay(20000);
 }

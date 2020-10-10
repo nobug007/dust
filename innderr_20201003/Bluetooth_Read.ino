@@ -18,8 +18,8 @@ int BT_Read() {
   
   if ( Flag == 'Y' ) {
        // 수신된 데이터 시리얼 모니터로 출력
-        Serial.print("BT Read Out Data :  ");
-        Serial.println(out_data);
+//        Serial.print("BT Read Out Data :  ");
+//        Serial.println(out_data);
         Flag = 'N';
   }
   return atoi(out_data);

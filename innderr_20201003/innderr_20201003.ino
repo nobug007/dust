@@ -20,8 +20,8 @@
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
 int ledPower = D0;         // Connect 3 led driver pins of dust sensor to Arduino D5
 
-int oCal = 60;
-int iCal = -115;
+int oCal = 65;
+int iCal = 5;
 // BT Port Set up
 SoftwareSerial bluetooth(D1, D2);   //  TX =  D1, RX =  D2    VCC = UV ( test ) 5V
 

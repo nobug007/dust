@@ -7,6 +7,7 @@ void display_init() {
   display.flipScreenVertically();
   display.setFont(ArialMT_Plain_10);
   drawStatus();  //  BT check & WiFi Check
+  display.display();
 }
 
 
@@ -17,9 +18,9 @@ void drawStatus() {
    // Title Display
 
   display.setTextAlignment(TEXT_ALIGN_CENTER);
-  Serial.print("=============================== ");
-  Serial.print(DevName);
-  Serial.println(" ===============================");
+//  Serial.print("=============================== ");
+//  Serial.print(DevName);
+//  Serial.println(" ===============================");
   
   display.drawString(64,2,DevName);
 
@@ -50,9 +51,8 @@ void drawStatus() {
 // Graph rectangle
    display.drawRect(0, 17, 128, 47);
    display.drawLine(0, 40, 128, 40);     //  47/2 = 23
-   display.drawLine(100, 18, 100, 63);     //  47/2 = 23
+   display.drawLine(101, 18, 101, 63);     //  47/2 = 23
 
-  display.display();
 }
 
 //=========================================================================
@@ -65,18 +65,22 @@ void drawGraph(int iDust, int oDust) {
    int j=0;
    char cTemp[5];
 
+  drawStatus();
+//  Serial.print("***************  iDust = ");
+//  Serial.print(iDust);
+//  Serial.print("    ***************  oDust = ");
+//  Serial.print(oDust);
+//  Serial.println("***************");
 
    display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
-   display.setColor(BLACK);
-   display.fillRect(102, 20, 24, 20);
-   display.fillRect(102, 42, 24, 20);
-   
    display.setColor(WHITE);
    sprintf(cTemp,"%d",iDust);
    display.drawString(124,25, cTemp);
    sprintf(cTemp,"%d",oDust);
    display.drawString(124,48, cTemp);
+
+
 
    if ( iDust > 100 ) iDust = 100 ;
    else if ( iDust < 0 ) iDust = 0;
@@ -95,10 +99,7 @@ void drawGraph(int iDust, int oDust) {
    oDust_Arr[iArr] = map(oDust,0,100,0,20);  // dust => graph high
 
  
-   for(j=0;j<iArr;j++) {
-      display.setColor(BLACK);
-      display.drawLine(j+1,40,j+1,20); 
-      display.drawLine(j+1,63,j+1,42); 
+   for(j=0;j<=iArr;j++) {
       display.setColor(WHITE);
       display.drawLine(j+1,40,j+1,40-iDust_Arr[j] );
       display.drawLine(j+1,63,j+1,63-oDust_Arr[j] );
@@ -106,7 +107,6 @@ void drawGraph(int iDust, int oDust) {
 
   display.display();
   if (iArr < graphMax-1 ) iArr++;
-
 //  Serial.println( iArr);
 //  delay(100);
 }

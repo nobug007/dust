@@ -10,8 +10,8 @@ int get_inner_dust() {
     dust += dust_check();
   }
   dust = dust / 5.0;
-  Serial.print("   -  5 times inner Dust density :  ");
-  Serial.println(dust);
+//  Serial.print("   -  5 times inner Dust density :  ");
+//  Serial.println(dust);
   return (int)dust;
 }
 
