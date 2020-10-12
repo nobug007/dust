@@ -50,10 +50,16 @@ int wifi_Flag = 0;
 
 char ssid[20] = "nobug_home";
 char password[20] = "bang8813";
-char DevName[20]= "nobug";
-int DelayTime = 30000;
-char URL[100]= "AKfycbyK-BAXk4EkgDBnqDUV6EcT4W72FzqcL-ez90RXHjn3wS-71Dvp";
+char DevName[20]= "dust";
+int DelayTime = 20000;
+char URL[100]= "AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx";
 
+/* 우문영   AKfycby_HUOgx8mllQOmr_hTdM6OVoaVwjIFaZ78t63msrKMkKTTGpo
+ * 박지수   AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx
+ * 신제용   AKfycbwsoCrKOusQSGTYzd9k8YdLg34fZ-wGVCwa0rHd1CXGe6vRW0O5
+ * 조해수   AKfycbxwR6Gqkt1vN50iJlSyI5KM5SwikVma9qIAr1YrhoGw7Yehnao5
+ * Ryu     AKfycbymvNaZ-PxsMzwL-t7iZ9JhUlIwkbehCNxjmTVdA0_oiNCi3Nk
+ */
 
 int bluetooth_flag = 0;
 
@@ -66,11 +72,13 @@ void setup() {
   Serial.begin(9600);
   pinMode(ledPower,OUTPUT);
   
-
     // BT setup
   Serial.println("BT Start");
   bluetooth.begin(9600);
+
+  init_SD();
   display_init();
+
   
 //  WiFi Setup
   WiFi_Connect();

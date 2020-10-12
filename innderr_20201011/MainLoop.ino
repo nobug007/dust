@@ -13,9 +13,10 @@ void loop() {
 
     i_data =  get_inner_dust()+iCal;
     drawGraph(i_data,o_data);
-      Serial.print("Out Data : ");
+
+    Serial.print("Out Data : ");
     Serial.print(o_data);
-       Serial.print("              In Data : ");
+    Serial.print("              In Data : ");
     Serial.println(i_data);
     
 
@@ -29,5 +30,5 @@ void loop() {
     WiFi_Connect();  
    }
    o_data = 0;
-   delay(20000);
+   delay(DelayTime);
 }

@@ -3,8 +3,6 @@
 //=========================================================================
 
 
-/*
- * 
 void init_SD() {
   char c;
   char s[200];
@@ -44,12 +42,12 @@ void init_SD() {
                 s[i] = NULL;
               }
           }
-  // close the file:
-           myFile.close();
-      } else {
+        // close the file:
+         myFile.close();
+     } else {
     // if the file didn't open, print an error:
-      Serial.println("error opening config.txt");
-      }
+        Serial.println("error opening config.txt");
+     }
 }
 
 void Config_data(char s[200]){
@@ -123,7 +121,3 @@ void Config_data(char s[200]){
   Serial.print("       Value = ");
   Serial.println(s_value); 
 }
-
-
-
-*/
