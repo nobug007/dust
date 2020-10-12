@@ -20,8 +20,7 @@
 int measurePin = A0;      // Connect dust sensor to arduino A0 pin
 int ledPower = D0;         // Connect 3 led driver pins of dust sensor to Arduino D5
 
-int oCal = 65;
-int iCal = 5;
+
 // BT Port Set up
 SoftwareSerial bluetooth(D1, D2);   //  TX =  D1, RX =  D2    VCC = UV ( test ) 5V
 
@@ -48,6 +47,8 @@ int iArr = 0;
 WiFiClientSecure client;
 int wifi_Flag = 0;
 
+int oCal = 65;
+int iCal = 5;
 char ssid[20] = "nobug_home";
 char password[20] = "bang8813";
 char DevName[20]= "dust";
@@ -58,7 +59,7 @@ char URL[100]= "AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx";
  * 박지수   AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx
  * 신제용   AKfycbwsoCrKOusQSGTYzd9k8YdLg34fZ-wGVCwa0rHd1CXGe6vRW0O5
  * 조해수   AKfycbxwR6Gqkt1vN50iJlSyI5KM5SwikVma9qIAr1YrhoGw7Yehnao5
- * Ryu     AKfycbymvNaZ-PxsMzwL-t7iZ9JhUlIwkbehCNxjmTVdA0_oiNCi3Nk
+ * 류정민   AKfycbymvNaZ-PxsMzwL-t7iZ9JhUlIwkbehCNxjmTVdA0_oiNCi3Nk
  */
 
 int bluetooth_flag = 0;
