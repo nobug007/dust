@@ -55,7 +55,8 @@ char DevName[20]= "dust";
 int DelayTime = 20000;
 char URL[100]= "AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx";
 
-/* 우문영   AKfycby_HUOgx8mllQOmr_hTdM6OVoaVwjIFaZ78t63msrKMkKTTGpo
+/* 방효식   AKfycbzW348NaBBoLuQ1thJqiROx-Yzwuxc4DujicWcieHvbav67tpc
+ * 우문영   AKfycby_HUOgx8mllQOmr_hTdM6OVoaVwjIFaZ78t63msrKMkKTTGpo
  * 박지수   AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx
  * 신제용   AKfycbwsoCrKOusQSGTYzd9k8YdLg34fZ-wGVCwa0rHd1CXGe6vRW0O5
  * 조해수   AKfycbxwR6Gqkt1vN50iJlSyI5KM5SwikVma9qIAr1YrhoGw7Yehnao5
