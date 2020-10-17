@@ -5,6 +5,8 @@
 void WiFi_Connect() {
   WiFi.mode(WIFI_STA);
 
+  Serial.print(" SSID =  ");  Serial.print(ssid);  Serial.print("     passwd = ");  Serial.println(password);
+
   WiFi.begin(ssid, password);
   int cnt = 0;
   wifi_Flag = 1;
