@@ -47,20 +47,20 @@ int iArr = 0;
 WiFiClientSecure client;
 int wifi_Flag = 0;
 
+int iCal = 0;
 int oCal = 65;
-int iCal = 5;
-char ssid[20] = "nobug_home";
-char password[20] = "bang8813";
-char DevName[20]= "dust";
+char ssid[20] = "shin";
+char password[20] = "!shin123";
+char DevName[20]= "Shin";
 int DelayTime = 20000;
-char URL[100]= "AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx";
+char URL[100]= "AKfycbwsoCrKOusQSGTYzd9k8YdLg34fZ-wGVCwa0rHd1CXGe6vRW0O5";
 
 /* 방효식   AKfycbzW348NaBBoLuQ1thJqiROx-Yzwuxc4DujicWcieHvbav67tpc
  * 우문영   AKfycby_HUOgx8mllQOmr_hTdM6OVoaVwjIFaZ78t63msrKMkKTTGpo
- * 박지수   AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx
- * 신제용   AKfycbwsoCrKOusQSGTYzd9k8YdLg34fZ-wGVCwa0rHd1CXGe6vRW0O5
+ * 박지수   AKfycbyoSPgZDf11k48PasuJuL6U53sPlOn1FhAOPx3CjFOrloSc7tQx    65 /  5   -   파란색 9
+ * 신제용   AKfycbwsoCrKOusQSGTYzd9k8YdLg34fZ-wGVCwa0rHd1CXGe6vRW0O5     0  /  65  -
  * 조해수   AKfycbxwR6Gqkt1vN50iJlSyI5KM5SwikVma9qIAr1YrhoGw7Yehnao5
- * 류정민   AKfycbymvNaZ-PxsMzwL-t7iZ9JhUlIwkbehCNxjmTVdA0_oiNCi3Nk
+ * 류정민   AKfycbymvNaZ-PxsMzwL-t7iZ9JhUlIwkbehCNxjmTVdA0_oiNCi3Nk        
  */
 
 int bluetooth_flag = 0;
